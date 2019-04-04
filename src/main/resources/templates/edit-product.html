@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Добавить товар</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+    <meta name="ctx" th:content="${#httpServletRequest.getContextPath()}"/>
+
+    <style>
+		.error {color:red}
+    </style>
+</head>
+
+<html>
+
+<body>
+
+<div th:replace="~{navigation :: navi(AddProduct)}"/>
+<div class="container">
+    <div class="form-group">
+        <div class="col-xs-15">
+            <div th:if="${productCreationError != null}">
+                <div class="alert alert-danger col-xs-offset-1 col-xs-10">
+                    <span th:text="${productCreationError}" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form th:action="@{/product/edit}" th:object="${product}" method="post">
+        <input hidden type="text" th:field="*{id}" class="form-control" id="productId">
+        <div class="error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}" />
+                <div class="form-group">
+            <label for="productTitle">Название</label>
+            <input type="text" th:field="*{title}" class="form-control" id="productTitle" placeholder="Введите название товара">
+        </div>
+        <div class="error" th:if="${#fields.hasErrors('cost')}" th:errors="*{cost}" />
+        <div class="form-group">
+            <label for="productCost">Цена</label>
+            <input th:field="*{cost}" type="number" class="form-control" id="productCost" placeholder="Введите цену товара">
+        </div>
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+    </form>
+</div>
+</body>
+</html>
