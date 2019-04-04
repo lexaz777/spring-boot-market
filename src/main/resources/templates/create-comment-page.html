@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <title>GeekWinterMarket</title>
+
+    <link rel="icon" type="image/png" th:href="@{/favicon.ico}"/>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+<div th:replace="~{navigation :: navi(Home)}"/>
+
+<div class="container">
+
+    <form th:action="@{/createcomment}" th:object="${comment}" method="post">
+        <input hidden type="text" th:field="*{product}" class="form-control" id="productId">
+        <div class="form-group">
+            <label for="productTitle">Название</label>
+            <input type="text" th:field="*{commentText}" class="form-control" id="productTitle"
+                   placeholder="Введите текст комментария">
+        </div>
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+    </form>
+</div>
+</body>
+</html>

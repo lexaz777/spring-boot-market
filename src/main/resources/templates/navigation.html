@@ -43,6 +43,9 @@
                     <a class="nav-link" th:href="@{/shop/cart}">Корзина</a>
                 </li>
                 <li sec:authorize="isAuthenticated()" class="nav-item">
+                    <a class="nav-link" th:href="@{/profile}">Профиль</a>>
+                </li>
+                <li sec:authorize="isAuthenticated()" class="nav-item">
                     <form th:action="@{/logout}" method="POST">
                         <input type="submit" class="btn btn-danger" value="Logout"/>
                     </form>

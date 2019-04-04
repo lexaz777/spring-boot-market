@@ -5,6 +5,7 @@ import com.geekbrains.springbootproject.entities.OrderItem;
 import com.geekbrains.springbootproject.entities.OrderStatus;
 import com.geekbrains.springbootproject.entities.User;
 import com.geekbrains.springbootproject.repositories.OrderRepository;
+import com.geekbrains.springbootproject.repositories.UserRepository;
 import com.geekbrains.springbootproject.utils.ShoppingCart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,10 +17,17 @@ import java.util.List;
 @Service
 public class OrderService {
     private OrderRepository orderRepository;
+    private UserRepository userRepository;
 
     @Autowired
     public void setOrderRepository(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
+    }
+
+
+    @Autowired
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Transactional
@@ -38,6 +46,15 @@ public class OrderService {
 
     public List<Order> getAllOrders() {
         return (List<Order>) orderRepository.findAll();
+    }
+
+    public List<Order> getAllOrdersByUser(User user) {
+        if (user == null) return null;
+        long userId = user.getId();
+
+        List<Order> orders = orderRepository.findAllByUserId(userId);
+        return orders;
+
     }
 
     public Order findById(Long id) {

@@ -56,6 +56,9 @@
             <td>
                 <a th:href="@{'/shop/cart/add/' + ${product.id}}" class="btn btn-primary">Добавить в корзину</a>
             </td>
+            <td>
+                <a th:href="@{'/comment/' + ${product.id}}" class="btn btn-primary">Оставить комментарий</a>
+            </td>
         </tr>
         </tbody>
     </table>
