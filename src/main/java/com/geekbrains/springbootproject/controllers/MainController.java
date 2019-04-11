@@ -1,34 +1,77 @@
 package com.geekbrains.springbootproject.controllers;
 
+import com.geekbrains.springbootproject.entities.Comment;
+import com.geekbrains.springbootproject.entities.Order;
 import com.geekbrains.springbootproject.entities.Product;
-import com.geekbrains.springbootproject.repositories.ProductsRepository;
+import com.geekbrains.springbootproject.entities.User;
+
+import com.geekbrains.springbootproject.services.CommentService;
+import com.geekbrains.springbootproject.services.OrderService;
 import com.geekbrains.springbootproject.services.ProductsService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import com.geekbrains.springbootproject.services.UserService;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ViewResolver;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 @Controller
 public class MainController {
     private ProductsService productsService;
+    private OrderService orderService;
+    private UserService userService;
+    private CommentService commentService;
 
-    @Autowired
+    public MainController(ProductsService productsService,
+                          OrderService orderService,
+                          UserService userService,
+                          CommentService commentService) {
+        this.productsService = productsService;
+        this.orderService = orderService;
+        this.userService = userService;
+        this.commentService = commentService;
+    }
+
+
+/*    @Autowired
     public void setProductsService(ProductsService productsService) {
         this.productsService = productsService;
-    }
+    }*/
 
     @GetMapping("/info")
     public String showInfoPage(Model model) {
         return "info";
     }
+
+    @GetMapping("/profile")
+    public String showUserProfile(Model model, Principal principal) {
+        User user = userService.findByUserName(principal.getName());
+        List<Order> orderList = orderService.getAllOrdersByUser(user);
+        model.addAttribute("orderList", orderList);
+        return "profile";
+    }
+
+    @GetMapping("/comment/{productId}")
+    public String createComment(Model model, @PathVariable("productId") Long productId) {
+        Comment comment = new Comment();
+        Product product = productsService.findById(productId);
+        comment.setProduct(product);
+        model.addAttribute("comment", comment);
+        return "create-comment-page";
+    }
+
+    @PostMapping("/createcomment")
+    public String saveComment(Model model, Principal principal, @ModelAttribute("comment") Comment comment) {
+        User user = userService.findByUserName(principal.getName());
+        comment.setUser(user);
+        commentService.saveComment(comment);
+        return "redirect:/shop";
+    }
+
 
     @GetMapping("/product/edit/{id}")
     public String addProductPage(Model model, @PathVariable("id") Long id) {
