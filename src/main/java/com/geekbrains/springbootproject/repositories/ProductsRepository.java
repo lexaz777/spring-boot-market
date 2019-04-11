@@ -9,10 +9,12 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public interface ProductsRepository extends PagingAndSortingRepository<Product, Long>, JpaSpecificationExecutor<Product> {
     Page<Product> findAllByPriceBetween(Pageable pageable, double minPrice, double maxPrice);
+    ArrayList<Product> findAllByPriceBetween(double minPrice, double maxPrice);
     Product findOneByTitle(String title);
 }
