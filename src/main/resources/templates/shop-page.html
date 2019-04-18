@@ -46,7 +46,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="product : ${products}">
+        <tr th:each="product : ${products}" class="table-row" data-th-href="@{'/shop/product/' + ${product.id}}">
             <td th:text="${product.id}"/>
             <td>
                 <img th:if="${product.images.size() > 0}" width="40" height="40" th:src="@{'/images/' + ${product.images[0].path}}" />
@@ -73,6 +73,15 @@
         </ul>
     </nav>
 </div>
+
+<script type="text/javascript">
+    $('.table-row').each(function() {
+        var $th = $(this);
+        $th.on('click', function() {
+            window.open($th.attr('href'));
+        });
+    });
+</script>
 
 </body>
 </html>

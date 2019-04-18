@@ -16,12 +16,29 @@
 
 <body>
 
-<div th:replace="~{navigation :: navi(Home)}" />
+<div th:replace="~{navigation :: navi(Home)}"/>
 
 <div class="container">
     <br>
-    <h1>Страница товара</h1>
-    
+    <div th:object="${product}">
+
+        <h1 th:text="*{title}"></h1>
+
+        <img th:if="${product.images.size() > 0}" width="40" height="40"
+             th:src="@{'/images/' + ${product.images[0].path}}"/>
+
+        <label for="productCost">Цена</label>
+        <a th:text="*{price}" id="productCost"></a>
+
+        <a th:text="*{category.title}"></a>
+        <a th:text="*{shortDescription}"></a>
+        <a th:text="*{fullDescription}"></a>
+
+        <a th:href="@{'/shop/cart/add/' + ${product.id}}" class="btn btn-primary">Добавить в корзину</a>
+
+
+    </div>
+
 
 </div>
 </body>
