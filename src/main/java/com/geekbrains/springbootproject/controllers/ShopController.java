@@ -1,9 +1,8 @@
 package com.geekbrains.springbootproject.controllers;
 
-import com.geekbrains.springbootproject.entities.DeliveryAddress;
-import com.geekbrains.springbootproject.entities.Order;
+
 import com.geekbrains.springbootproject.entities.Product;
-import com.geekbrains.springbootproject.entities.User;
+
 import com.geekbrains.springbootproject.repositories.specifications.ProductSpecs;
 import com.geekbrains.springbootproject.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import java.security.Principal;
-import java.time.LocalDateTime;
-import java.util.List;
+
 import java.util.Optional;
 
 @Controller
@@ -30,6 +26,14 @@ public class ShopController {
     @Autowired
     public void setProductsService(ProductsService productsService) {
         this.productsService = productsService;
+    }
+
+    //отображение страницы товара по id товара
+    @RequestMapping("/product/{productId}")
+    public String showProduct(Model model, @PathVariable long productId) {
+        Product product = productsService.findById(productId);
+        model.addAttribute("product", product);
+        return "product-page";
     }
 
     @GetMapping
